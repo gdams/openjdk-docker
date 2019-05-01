@@ -1,21 +1,26 @@
-os: linux
-
 language: bash
 services: docker
 
-env:
-  matrix:
-    - VERSION=12
-    - VERSION=11
-    - VERSION=8
-
-script: ./build_latest.sh $VERSION
-
-stages:
-  - linter
-  - test
-
-jobs:
+matrix:
   include:
-    - stage: linter
-      script: ./linter.sh
+    - os: linux
+      env: VERSION=linter
+    - os: linux
+      env: VERSION=12
+    - os: linux
+      env: VERSION=11
+    - os: linux
+      env: VERSION=18
+
+script:
+  - ./build_latest.sh $VERSION
+
+script:
+  - |
+    (
+      if [ "$VERSION" == "linter" ]; then
+        ./linter.sh
+      else
+        ./build_latest.sh "$VERSION"
+      fi
+    )

@@ -77,7 +77,7 @@ function set_arch_os() {
 		;;
 	amd64|x86_64)
 		case $(uname) in
-			MINGW64*)
+			MINGW64*|MSYS_NT*)
 				current_arch="x86_64"
 				oses="windows"
 				;;
